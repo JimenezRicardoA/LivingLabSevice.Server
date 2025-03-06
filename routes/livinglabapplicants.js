@@ -3,7 +3,8 @@ var router = express.Router();
 
 const {
     signup,
-    login
+    login,
+    deletapplicant
 } = require('../controllers/apservicio.controller');
 
 const {
@@ -12,6 +13,7 @@ const {
 
 router.post('/signup', signup);
 router.post('/login', login);
+router.post('/deleteapplicant', deletapplicant);
 
 router.post('/cv', createCv);
 

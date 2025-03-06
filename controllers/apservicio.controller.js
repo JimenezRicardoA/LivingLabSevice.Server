@@ -8,9 +8,9 @@ const JWT_SECRET = 'clave';
 
 async function signup(req, res) {
     try {
-        const { nombres, apellidos, telefono, correo, /*universidad, carrera, cv, sobremi,*/ username, password } = req.body;
+        const { nombres, apellidos, telefono, correo, username, password } = req.body;
 
-        if (!nombres || !apellidos || !telefono || !correo || /*!universidad || !carrera || !cv || !sobremi ||*/ !username || !password) {
+        if (!nombres || !apellidos || !telefono || !correo || !username || !password) {
             return res.status(400).json({
                 message: 'Todos los campos son requeridos'
             });
@@ -37,10 +37,6 @@ async function signup(req, res) {
             apellidos,
             telefono,
             correo,
-            //universidad,
-            //carrera,
-            //cv,
-            //sobremi,
             username,
             password: hashedPassword
         });
@@ -60,6 +56,7 @@ async function signup(req, res) {
 }
 
 async function login(req, res) {
+
     try {
         const { username, password } = req.body;
 
@@ -95,15 +92,54 @@ async function login(req, res) {
             message: 'Bienvenido',
             token
         });
+
     } catch (error) {
+
         res.status(500).json({
             message: 'Error en el servidor',
             error: error.message
         });
+
     }
+
+}
+
+async function deletapplicant(req, res) {
+
+    try {
+
+        const { userId } = req.body;
+
+        const deletuser = await aplicantesModel.findByIdAndUpdate(
+            userId,
+            { is_deleted: true },
+            { new: true }
+        );
+
+        if (!deletuser) {
+            return res.status(400).json({
+                message: 'Usuario no encontrado'
+            });
+        }
+
+        res.status(200).json({
+            message: 'Usuario eliminado correctamente',
+            user: deletuser
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: 'Error en el servidor',
+            error: error.message
+        });
+
+    }
+
 }
 
 module.exports = {
     signup,
-    login
+    login,
+    deletapplicant
 };

@@ -24,7 +24,11 @@ const apservicioSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    is_deleted: {
+        type: Boolean,
+        default: false
+    },
 });
 
 const aplicantesModel = mongoose.model('aplicantes', apservicioSchema);
